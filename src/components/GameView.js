@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
-
+import { gameStore } from '../store/GameStore.js';
 
 
 class GameView extends Component {
@@ -14,15 +14,6 @@ class GameView extends Component {
 
 	const {innings, people, positions}  = this.props;
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-        </p>
-	
-		<p>
 		<table>
 			<tr>
 				<th></th>
@@ -39,9 +30,6 @@ class GameView extends Component {
 				</tr>
 			)}
 		</table>
-		</p>
-
-      </div>
     );
   }
 }
@@ -51,13 +39,19 @@ class InningPosition extends Component {
 		super(props);
 	}
 
+    updated(e, inning, position) {
+		if( e.target.value ){
+			gameStore.updateAssignment(e.target.value, inning, position);
+		}
+	}
+
 	render() {
-		const {innings, players, positions}  = this.props;
+		const {inning, players, position}  = this.props;
 		return (
-			<select>
+			<select onChange={(e) => this.updated(e, inning, position)}>
 			<option/>
 			{players.map((p) =>
-				<option>{p}</option>
+				<option value={p}>{p}</option>
 			)}
 			</select>
 		);

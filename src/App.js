@@ -2,25 +2,37 @@ import React, { Component } from 'react';
 import GameView from './components/GameView.js';
 import logo from './logo.svg';
 import './App.css';
+import { gameStore } from './store/GameStore.js';
 
 
 class App extends Component {
 
-  constructor(props) {
+    constructor(props) {
 	super(props);
-    this.state = {
-		innings:  ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th'],
-		people: ['sally', 'jane', 'robin'],
-		positions: ['Pitcher', 'Catcher', '1st', '2nd', 'SS', '3rd', 'LF', 'CF', 'RF']
+	this.state = {
+	    innings: gameStore.innings,
+	    people: gameStore.players,
+		positions: gameStore.positions
+	}
+	gameStore.addListener(this);
     }
-  }
 
-  render() {
+    updated() {
+	alert("store updated");	
+    }
+
+    render() {
 	const {innings, people, positions}  = this.state;
 	return (
+		<div className="App">
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Game Assignments</h2>
+        </div>
     	<GameView innings={innings} people={people} positions={positions}/>
-    );
-  }
+		</div>
+		);
+    }
 
 }
 
